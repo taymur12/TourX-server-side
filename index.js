@@ -23,6 +23,7 @@ async function run(){
         const database = client.db("tourx")
         const service = database.collection("service")
         const placeorder = database.collection("placeorder")
+        const addnew = database.collection("addnew")
         
         //get service api
         app.get('/service', async (req,res)=>{
@@ -34,7 +35,7 @@ async function run(){
         //post order api
         app.post('/placeorder', async(req,res)=>{
             const doc = req.body
-            console.log('hit the api', doc)
+            // console.log('hit the api', doc)
             const result = await placeorder.insertOne(doc);
             res.json(result)
         })
@@ -67,6 +68,21 @@ async function run(){
             const manageQuery = {_id:ObjectId(id)}
             const manageResult = await placeorder.deleteOne(manageQuery)
             res.json(manageResult)
+        })
+
+        //add new service api
+        app.post('/addnew', async(req, res)=>{
+            const adddoc = req.body
+            console.log('hit the api', adddoc)
+            const addresult = await addnew.insertOne(adddoc)
+            res.json(addresult)
+        })
+
+        //get new service api
+        app.get('/addnewservice', async(req, res)=>{
+            const cursor = addnew.find({})
+            const addnewservice = await cursor.toArray()
+            res.json(addnewservice)
         })
     }
     finally{
