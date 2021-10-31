@@ -53,6 +53,21 @@ async function run(){
             const result = await placeorder.deleteOne(query)
             res.json(result)
         })
+
+        //get Manage order Api
+        app.get('/manageorder', async(req, res)=>{
+            const cursor = placeorder.find({})
+            const manageorder = await cursor.toArray();
+            res.json(manageorder)
+        })
+
+        //delete manage order admin
+        app.delete('/manageorder/:id', async(req,res)=>{
+            const id = req.params.id
+            const manageQuery = {_id:ObjectId(id)}
+            const manageResult = await placeorder.deleteOne(manageQuery)
+            res.json(manageResult)
+        })
     }
     finally{
         // await client.close();
